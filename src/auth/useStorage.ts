@@ -1,33 +1,43 @@
+import { IUserAuth } from "../interfaces/IUserAuth";
+
 const useStorage = () => {
-    const getEmailStorage = () => {
-      const value: string | null = window.localStorage.getItem("email");
-
-      return value;
-    };
-    const getLocalStorage = () => {
-      return window.localStorage.getItem("token");
-    };
-
-    const setLocalStorage = (
-      type: number,
-      data: { email: string; token: string } | null
-    ) => {
-      if (type === 1) {
-        if (data !== null) {
-          window.localStorage.setItem("email", data.email);
-          window.localStorage.setItem("token", data.token);
-        }
-      } else if (type === 2) {
-        window.localStorage.removeItem("email");
-        window.localStorage.removeItem("token");
-      }
-    };
-
-    return {
-      getEmailStorage,
-      getLocalStorage,
-      setLocalStorage,
-    };
+  const getUserIdStorage = (): number | null => {
+    return Number(window.localStorage.getItem("userId"));
+  };
+  const getEmailStorage = (): string | null => {
+    return window.localStorage.getItem("email");
+  };
+  const getLocalStorage = (): string | null => {
+    return window.localStorage.getItem("token");
   };
 
-  export default useStorage;
+  const setLocalStorage = (
+    type: number,
+    data: IUserAuth | null,
+  ) => {
+    if (type === 1) {
+      if (data !== null) {
+        window.localStorage.setItem("userId", data.userId.toString());
+        window.localStorage.setItem("email", data.email);
+        window.localStorage.setItem("userName", data.userName);
+        window.localStorage.setItem("token", data.token);
+        window.localStorage.setItem("role", data.role);
+      }
+    } else if (type === 2) {
+      window.localStorage.removeItem("email");
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("userId");
+      window.localStorage.removeItem("userName");
+      window.localStorage.removeItem("role");
+    }
+  };
+
+  return {
+    getUserIdStorage,
+    getEmailStorage,
+    getLocalStorage,
+    setLocalStorage,
+  };
+};
+
+export default useStorage;

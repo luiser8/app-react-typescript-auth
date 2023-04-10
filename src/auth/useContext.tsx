@@ -6,8 +6,12 @@ import { IUserAuth } from "../interfaces/IUserAuth";
 export const authContext = createContext<TypesContext | null>(null);
 
 const userDataInitial: IUserAuth = {
+  userId: 0,
   email: "",
+  userName: "",
   token: "",
+  role: "",
+  password: "",
 };
 
 interface Props {
@@ -15,9 +19,17 @@ interface Props {
 }
 
 export const ContextProvider: React.FC<Props> = ({ children }) => {
-  const { getEmailStorage, getLocalStorage, setLocalStorage } = useStorage();
-  const [dataUser, setDataUser] = useState<IUserAuth>(userDataInitial);
+  const {
+    getUserIdStorage,
+    getEmailStorage,
+    getLocalStorage,
+    setLocalStorage,
+  } = useStorage();
+  const [, setDataUser] = useState<IUserAuth>(userDataInitial);
 
+  const getUserId = () => {
+    return getUserIdStorage() as number;
+  };
   const getEmail = () => {
     return getEmailStorage() as string;
   };
@@ -38,6 +50,7 @@ export const ContextProvider: React.FC<Props> = ({ children }) => {
       value={{
         setDataUser,
         getToken,
+        getUserId,
         getEmail,
         login,
         logout,

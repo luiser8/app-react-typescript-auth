@@ -1,34 +1,100 @@
 import { IUser } from "../../interfaces/IUser";
 import { IUserAuth } from "../../interfaces/IUserAuth";
-import { getUsers, postLoginUsers } from "../client/userClient";
+import { IUserRegister } from "../../interfaces/IUserRegister";
+import { getUsers, getUsersById, postLoginUsers, postUsers } from "../client/userClient";
 
 export const getUsersService = async () => {
-    let users: Array<IUser> = [];
+    let data: Array<IUser> = [];
+    let error: string = "";
     (Promise.all<void>([
-        await getUsers().then((values: any) => {
+        await getUsers().then((values: IUser | any) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                users = [...users, ...values as IUser[]];
+                data = [...data, ...values as IUser[]];
             }
         }),
     ]).catch(error => {
-        new Error(error);
+        return new Error(error);
     }));
-    return users;
+    return { data, error };
 }
 
-export const postUsersLoginService = async (data: IUserAuth) => {
-    let user: IUserAuth = {
-        email: "",
-        password: ""
+export const getUsersByIdService = async (id: number) => {
+    let data: IUser = {
+        id: 0,
+        userName: "",
+        authStrategy: "",
+        posts: [],
+        createdAt: new Date,
+        profile: undefined,
+        roles: undefined
     };
+    let error: string = "";
     (Promise.all<void>([
-        await postLoginUsers(data).then((values: any) => {
+        await getUsersById(id).then((values: IUser | any) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                user = { ...user, ...values as IUserAuth };
+                data = { ...data, ...values as IUser };
             }
         }),
     ]).catch(error => {
-        new Error(error);
+        return new Error(error);
     }));
-    return user;
+    return { data, error };
+}
+
+export const postUsersService = async (dataUser: IUserRegister) => {
+    let data: IUserRegister = {
+        userName: "",
+        password: "",
+        roles: { id: 0, name: "" },
+        profile: { firstName: "", lastName: "", email: "", photo: "" },
+    };
+    let error: string = "";
+    (Promise.all<void>([
+        await postUsers(dataUser).then((values: IUser | any) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
+            if (values !== null) {
+                data = { ...data, ...values as IUserRegister };
+            }
+        }),
+    ]).catch(error => {
+        return new Error(error);
+    }));
+    return { data, error };
+}
+
+export const postUsersLoginService = async (dataUser: IUserAuth) => {
+    let data: IUserAuth = {
+        userName: "",
+        password: "",
+        email: "",
+        token: "",
+        role: "",
+        userId: 0
+    };
+    let error: string = "";
+    (Promise.all<void>([
+        await postLoginUsers(dataUser).then((values: IUser | any) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
+            if (values !== null) {
+                data = { ...data, ...values as IUserAuth };
+            }
+        }),
+    ]).catch(error => {
+        return new Error(error);
+    }));
+    return { data, error };
 }

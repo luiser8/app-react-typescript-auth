@@ -1,5 +1,9 @@
 export interface IUserAuth {
-    email: string;
+    userId: number;
+    userName: string;
     password: string;
-    token?: string;
+    email: string;
+    token: string;
+    role: string;
+    error?: string;
 }
