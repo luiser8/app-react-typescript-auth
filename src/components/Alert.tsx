@@ -1,11 +1,11 @@
 type Props = {
-  error: { error: boolean; msj: string };
+  isError: { isError: boolean; msj: string };
 };
 
-const Alert = ({ error }: Props) => {
+const Alert = ({ isError }: Props) => {
   return (
     <div>
-      <p>{error.msj}</p>
+      <p>{isError.msj}</p>
     </div>
   );
 };

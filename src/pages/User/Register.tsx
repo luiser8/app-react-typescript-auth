@@ -5,7 +5,10 @@ import { postUsersService } from "../../http/service/userService";
 import Alert from "../../components/Alert";
 
 const Register = () => {
-  const [errorRegister, setErrorRegister] = useState({ error: false, msj: "" });
+  const [errorRegister, setErrorRegister] = useState({
+    isError: false,
+    msj: "",
+  });
   const [userRegister, setUserRegister] = useState<IUserRegister>({
     userName: "",
     password: "",
@@ -14,12 +17,12 @@ const Register = () => {
 
   const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
-    setErrorRegister({ ...errorRegister, error: false, msj: "" });
+    setErrorRegister({ ...errorRegister, isError: false, msj: "" });
     const { data, error } = await postUsersService(userRegister);
     if (data?.message?.includes("User") || error !== "") {
       setErrorRegister({
         ...errorRegister,
-        error: true,
+        isError: true,
         msj: data.message || "",
       });
     } else {
@@ -38,7 +41,7 @@ const Register = () => {
 
   return (
     <div className="register-page">
-      {errorRegister.error ? <Alert error={errorRegister} /> : <></>}
+      {errorRegister.isError ? <Alert isError={errorRegister} /> : <></>}
       <div className="form">
         <form className="login-form" onSubmit={handleRegister}>
           <input

@@ -80,11 +80,16 @@ export const postUsersLoginService = async (dataUser: IUserAuth) => {
         email: "",
         token: "",
         role: "",
-        userId: 0
+        userId: 0,
     };
     let error: string = "";
     (Promise.all<void>([
         await postLoginUsers(dataUser).then((values: IUser | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
+
             if (values === "Invalid Token") {
                 error = values;
                 return;

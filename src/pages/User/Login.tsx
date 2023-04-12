@@ -9,7 +9,10 @@ import Alert from "../../components/Alert";
 
 const Login = () => {
   const { login } = useContext(authContext) as TypesContext;
-  const [errorRegister, setErrorRegister] = useState({ error: false, msj: "" });
+  const [errorRegister, setErrorRegister] = useState({
+    isError: false,
+    msj: "",
+  });
   const [user, setUser] = useState<IUserAuth>({
     userId: 0,
     email: "",
@@ -21,9 +24,12 @@ const Login = () => {
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    setErrorRegister({ ...errorRegister, error: false, msj: "" });
+    setErrorRegister({ ...errorRegister, isError: false, msj: "" });
     const { data, error } = await postUsersLoginService(user);
-    if (data?.error !== "Error credentials") {
+    if (
+      data?.error !== "Error credentials" &&
+      error !== "There was a connection problem"
+    ) {
       login({
         userId: data.userId,
         email: data.email,
@@ -33,13 +39,17 @@ const Login = () => {
         role: data.role,
       });
     } else {
-      setErrorRegister({ ...errorRegister, error: true, msj: data.error });
+      setErrorRegister({
+        ...errorRegister,
+        isError: true,
+        msj: data.error || error,
+      });
     }
   };
 
   return (
     <div className="login-page">
-      {errorRegister.error ? <Alert error={errorRegister} /> : <></>}
+      {errorRegister.isError ? <Alert isError={errorRegister} /> : <></>}
       <div className="form">
         <form className="login-form" onSubmit={handleLogin}>
           <input
