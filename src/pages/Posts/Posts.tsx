@@ -9,14 +9,18 @@ import PostsDetails from "./PostsDetails";
 const Posts = () => {
   const { getUserId } = useContext(authContext) as TypesContext;
   const [postsUsers, setPostsUsers] = useState<IPosts[]>([]);
+  const [errorPosts, setErrorPosts] = useState<string>("");
 
   const getPostsUsers = async (): Promise<void> => {
     const { data, error } = await getPostsByUserIdService(getUserId());
-    if (data !== undefined) {
+    if (data !== undefined && data.length !== 0) {
       setPostsUsers(data);
     }
-    if (error !== "") {
-      console.log("Error get posts");
+    if (data.length !== 0) {
+      setErrorPosts("Posts not found, create new posts");
+    }
+    if (error === "There was a connection problem") {
+      setErrorPosts(error);
     }
   };
 
@@ -37,7 +41,7 @@ const Posts = () => {
         </>
       ) : (
         <>
-          <h3>Posts not found, create new posts</h3>
+          <h3>{errorPosts}</h3>
           <Link to={"/posts/new"}>Create posts</Link>
         </>
       )}

@@ -8,11 +8,15 @@ export const getUsersService = async () => {
     let error: string = "";
     (Promise.all<void>([
         await getUsers().then((values: IUser | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = [...data, ...values as IUser[]];
             }
         }),
@@ -35,11 +39,15 @@ export const getUsersByIdService = async (id: number) => {
     let error: string = "";
     (Promise.all<void>([
         await getUsersById(id).then((values: IUser | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = { ...data, ...values as IUser };
             }
         }),
@@ -59,11 +67,15 @@ export const postUsersService = async (dataUser: IUserRegister) => {
     let error: string = "";
     (Promise.all<void>([
         await postUsers(dataUser).then((values: IUser | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = { ...data, ...values as IUserRegister };
             }
         }),
@@ -89,12 +101,11 @@ export const postUsersLoginService = async (dataUser: IUserAuth) => {
                 error = "There was a connection problem";
                 return;
             }
-
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = { ...data, ...values as IUserAuth };
             }
         }),

@@ -7,11 +7,15 @@ export const getPostsService = async () => {
     let error: string = "";
     (Promise.all<void>([
         await getPosts().then((values: IPosts | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = [...data, ...values as IPosts[]];
             }
         }),
@@ -26,11 +30,15 @@ export const getPostsByUserIdService = async (id: number) => {
     let error: string = "";
     (Promise.all<void>([
         await getPostsByUserId(id).then((values: IPosts | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = [...data, ...values as IPosts[]];
             }
         }),
@@ -52,11 +60,15 @@ export const postPostsService = async (dataPosts: IPostsRegister) => {
     let error: string = "";
     (Promise.all<void>([
         await postPosts(dataPosts).then((values: IPosts | any) => {
+            if (values === undefined) {
+                error = "There was a connection problem";
+                return;
+            }
             if (values === "Invalid Token") {
                 error = values;
                 return;
             }
-            if (values !== null) {
+            if (values !== null || undefined) {
                 data = { ...data, ...values as IPostsRegister };
             }
         }),
