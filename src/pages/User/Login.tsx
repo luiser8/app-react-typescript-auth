@@ -26,10 +26,7 @@ const Login = () => {
     event.preventDefault();
     setErrorRegister({ ...errorRegister, isError: false, msj: "" });
     const { data, error } = await postUsersLoginService(user);
-    if (
-      data?.error !== "Error credentials" &&
-      error !== "There was a connection problem"
-    ) {
+    if (data?.error === "" && error === "") {
       login({
         userId: data.userId,
         email: data.email,
