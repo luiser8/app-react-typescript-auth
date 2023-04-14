@@ -93,6 +93,7 @@ export const postUsersLoginService = async (dataUser: IUserAuth) => {
         token: "",
         role: "",
         userId: 0,
+        error: "",
     };
     let error: string = "";
     (Promise.all<void>([
