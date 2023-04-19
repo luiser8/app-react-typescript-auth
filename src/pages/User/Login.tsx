@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { IUserAuth } from "../../interfaces/IUserAuth";
+import { IUserLogin } from "../../interfaces/IUserAuth";
 import { TypesContext } from "../../types/Types.context";
 import { authContext } from "../../auth/useContext";
 import "../../../public/css/form.css";
@@ -13,13 +13,9 @@ const Login = () => {
     isError: false,
     msj: "",
   });
-  const [user, setUser] = useState<IUserAuth>({
-    userId: 0,
-    email: "",
-    token: "",
+  const [user, setUser] = useState<IUserLogin>({
     userName: "",
     password: "",
-    role: "",
   });
 
   const handleLogin = async (event: React.FormEvent) => {

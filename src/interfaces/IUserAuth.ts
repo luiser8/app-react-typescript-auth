@@ -7,3 +7,8 @@ export interface IUserAuth {
     role: string;
     error?: string;
 }
+export interface IUserLogin {
+    userName: string;
+    password: string;
+    error?: string;
+}

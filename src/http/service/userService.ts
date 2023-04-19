@@ -1,5 +1,5 @@
 import { IUser } from "../../interfaces/IUser";
-import { IUserAuth } from "../../interfaces/IUserAuth";
+import { IUserAuth, IUserLogin } from "../../interfaces/IUserAuth";
 import { IUserRegister } from "../../interfaces/IUserRegister";
 import { getUsers, getUsersById, postLoginUsers, postUsers } from "../client/userClient";
 
@@ -85,7 +85,7 @@ export const postUsersService = async (dataUser: IUserRegister) => {
     return { data, error };
 }
 
-export const postUsersLoginService = async (dataUser: IUserAuth) => {
+export const postUsersLoginService = async (dataUser: IUserLogin) => {
     let data: IUserAuth = {
         userName: "",
         password: "",
