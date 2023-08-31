@@ -7,14 +7,15 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/User/Login";
 import Register from "../pages/User/Register";
 import PostsRegister from "../pages/Posts/PostsRegister";
+import Forgot from "../pages/User/Forgot";
 
 export default function Routing() {
-  const { getToken } = useContext(authContext) as TypesContext;
+  const { getUserId } = useContext(authContext) as TypesContext;
 
   return useRoutes([
     {
       path: "/",
-      element: getToken() !== null ? <Home /> : <Login />,
+      element: getUserId() === 0 ? <Login /> : <Home />,
     },
     {
       path: "/register",
@@ -22,7 +23,7 @@ export default function Routing() {
     },
     {
       path: "/forgot",
-      element: <PostsRegister />,
+      element: <Forgot />,
     },
     {
       path: "/posts/new",

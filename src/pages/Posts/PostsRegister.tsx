@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { IPostsRegister } from "../../interfaces/IPostsRegister";
+import { IPostsRegister } from "../../interfaces/IPosts";
 import { postPostsService } from "../../http/service/postsService";
 import { authContext } from "../../auth/useContext";
 import { TypesContext } from "../../types/Types.context";
 
 const PostsRegister = () => {
-  const { getUserId } = useContext(authContext) as TypesContext;
+  const { getUserId, getToken } = useContext(authContext) as TypesContext;
   const [postsRegister, setPostsRegister] = useState<IPostsRegister>({
     title: "",
     description: "",
@@ -16,7 +16,7 @@ const PostsRegister = () => {
 
   const handlePostsRegister = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { data, error } = await postPostsService(postsRegister);
+    const { data, error } = await postPostsService(postsRegister, getToken());
     if (error !== "") {
       console.log("Error save new posts");
     }

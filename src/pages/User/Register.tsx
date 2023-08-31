@@ -7,7 +7,7 @@ import Alert from "../../components/Alert";
 const Register = () => {
   const [errorRegister, setErrorRegister] = useState({
     isError: false,
-    msj: "",
+    msj: ""
   });
   const [userRegister, setUserRegister] = useState<IUserRegister>({
     userName: "",
@@ -17,16 +17,22 @@ const Register = () => {
 
   const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
-    setErrorRegister({ ...errorRegister, isError: false, msj: "" });
+    setErrorRegister({ ...errorRegister, isError: false, msj: ""});
     const { data, error } = await postUsersService(userRegister);
-    if (data?.message?.includes("User") || error !== "") {
+    console.log(data, error)
+    if (data?.message?.includes("Success") || error !== "") {
+      setErrorRegister({
+        ...errorRegister,
+        isError: false,
+        msj: data.message || "",
+      });
+      clearInputs();
+    }else{
       setErrorRegister({
         ...errorRegister,
         isError: true,
-        msj: data.message || "",
+        msj: data.message || ""
       });
-    } else {
-      clearInputs();
     }
   };
 

@@ -9,9 +9,8 @@ const userDataInitial: IUserAuth = {
   userId: 0,
   email: "",
   userName: "",
-  token: "",
   role: "",
-  password: "",
+  token: ""
 };
 
 interface Props {

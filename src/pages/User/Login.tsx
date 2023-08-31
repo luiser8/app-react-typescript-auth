@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { IUserLogin } from "../../interfaces/IUserAuth";
+import jwt_decode from "jwt-decode";
+import { IUserAuth, IUserLogin } from "../../interfaces/IUserAuth";
 import { TypesContext } from "../../types/Types.context";
 import { authContext } from "../../auth/useContext";
-import "../../../public/css/form.css";
-import { postUsersLoginService } from "../../http/service/userService";
+import "../../../public/assets/form.css";
 import Alert from "../../components/Alert";
+import { postAuthLoginService } from "../../http/service/authService";
+import { access } from "fs";
 
 const Login = () => {
   const { login } = useContext(authContext) as TypesContext;
@@ -21,21 +23,22 @@ const Login = () => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setErrorRegister({ ...errorRegister, isError: false, msj: "" });
-    const { data, error } = await postUsersLoginService(user);
-    if (data?.error === "" && error === "") {
+    console.log(user)
+    const { data, error } = await postAuthLoginService(user);
+    if (data?.status === 200 && error.status !== 401) {
+      const decoded: IUserAuth = jwt_decode(data.access_token);
       login({
-        userId: data.userId,
-        email: data.email,
-        userName: data.userName,
-        password: data.password,
-        token: data.token,
-        role: data.role,
+        userId: decoded?.userId,
+        email: decoded.email,
+        userName: decoded.userName,
+        role: decoded.role,
+        token: data.access_token
       });
     } else {
       setErrorRegister({
         ...errorRegister,
         isError: true,
-        msj: data.error || error,
+        msj: error.message,
       });
     }
   };
@@ -63,7 +66,7 @@ const Login = () => {
         </form>
         <Link to={"/register"}>Create account</Link>
         <br />
-        <Link to={"/#"}>Forgot password</Link>
+        <Link to={"/forgot"}>Forgot password</Link>
       </div>
     </div>
   );

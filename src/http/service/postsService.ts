@@ -1,12 +1,12 @@
-import { IPostsRegister } from "../../interfaces/IPostsRegister";
+import { IPostsRegister } from "../../interfaces/IPosts";
 import { IPosts } from "../../interfaces/IUser";
 import { getPosts, getPostsByUserId, postPosts } from "../client/postsClient";
 
-export const getPostsService = async () => {
+export const getPostsService = async (token: string) => {
     let data: Array<IPosts> = [];
     let error: string = "";
     (Promise.all<void>([
-        await getPosts().then((values: IPosts | any) => {
+        await getPosts(token).then((values: IPosts | any) => {
             if (values === undefined) {
                 error = "There was a connection problem";
                 return;
@@ -25,11 +25,11 @@ export const getPostsService = async () => {
     return { data, error };
 }
 
-export const getPostsByUserIdService = async (id: number) => {
+export const getPostsByUserIdService = async (id: number, token: string) => {
     let data: Array<IPosts> = [];
     let error: string = "";
     (Promise.all<void>([
-        await getPostsByUserId(id).then((values: IPosts | any) => {
+        await getPostsByUserId(id, token).then((values: IPosts | any) => {
             if (values === undefined) {
                 error = "There was a connection problem";
                 return;
@@ -48,7 +48,7 @@ export const getPostsByUserIdService = async (id: number) => {
     return { data, error };
 }
 
-export const postPostsService = async (dataPosts: IPostsRegister) => {
+export const postPostsService = async (dataPosts: IPostsRegister, token: string) => {
     let data: IPostsRegister = {
         title: "",
         description: "",
@@ -59,7 +59,7 @@ export const postPostsService = async (dataPosts: IPostsRegister) => {
     };
     let error: string = "";
     (Promise.all<void>([
-        await postPosts(dataPosts).then((values: IPosts | any) => {
+        await postPosts(dataPosts, token).then((values: IPosts | any) => {
             if (values === undefined) {
                 error = "There was a connection problem";
                 return;

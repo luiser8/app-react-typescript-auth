@@ -7,7 +7,7 @@ import Routing from "../utils/Routing";
 
 const Layout = () => {
   const navigate = useNavigate();
-  const { getToken, getEmail, logout } = useContext(
+  const { getUserId, getEmail, logout } = useContext(
     authContext,
   ) as TypesContext;
 
@@ -18,10 +18,10 @@ const Layout = () => {
 
   return (
     <div>
-      {getToken() != null ? (
-        <NavBar email={getEmail()} logout={logoutSession} />
-      ) : (
+      {getUserId() === 0 ? (
         <></>
+      ) : (
+        <NavBar email={getEmail()} logout={logoutSession} />
       )}
       <Routing />
     </div>

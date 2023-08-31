@@ -1,18 +1,18 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { IPosts } from "../../interfaces/IUser";
+import { IPosts } from "../../interfaces/IPosts";
 import { getPostsByUserIdService } from "../../http/service/postsService";
 import { authContext } from "../../auth/useContext";
 import { TypesContext } from "../../types/Types.context";
 import PostsDetails from "./PostsDetails";
 
 const Posts = () => {
-  const { getUserId } = useContext(authContext) as TypesContext;
+  const { getUserId, getToken } = useContext(authContext) as TypesContext;
   const [postsUsers, setPostsUsers] = useState<IPosts[]>([]);
   const [errorPosts, setErrorPosts] = useState<string>("");
 
   const getPostsUsers = async (): Promise<void> => {
-    const { data, error } = await getPostsByUserIdService(getUserId());
+    const { data, error } = await getPostsByUserIdService(getUserId(), getToken());
     if (data !== undefined && data.length !== 0) {
       setPostsUsers(data);
     }

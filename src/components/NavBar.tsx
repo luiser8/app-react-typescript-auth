@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import "../../public/css/navbar.css";
+import "../../public/assets/navbar.css";
 
 type Props = {
     email: string,
@@ -28,7 +28,7 @@ const NavBar = ({ email, logout }: Props) => {
         <nav>
             <img src="../../public/assets/menu.svg" alt="menu" className="menu" />
             <div className="navbar-left">
-                <img src="../../public/assets/logo.svg" alt="logo" className="logo" />
+                <img src="../../public/assets/react-2.svg" alt="logo" className="logo" />
                 <ul>
                     <li>
                         <a href="/">All</a>
