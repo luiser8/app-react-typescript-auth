@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { IUserAuth, IUserLogin } from "../../interfaces/IUserAuth";
 import { TypesContext } from "../../types/Types.context";
 import { authContext } from "../../auth/useContext";
 import "../../../public/assets/form.css";
 import Alert from "../../components/Alert";
 import { postAuthLoginService } from "../../http/service/authService";
-import { access } from "fs";
 
 const Login = () => {
   const { login } = useContext(authContext) as TypesContext;
@@ -26,7 +25,7 @@ const Login = () => {
     console.log(user)
     const { data, error } = await postAuthLoginService(user);
     if (data?.status === 200 && error.status !== 401) {
-      const decoded: IUserAuth = jwt_decode(data.access_token);
+      const decoded: IUserAuth = jwtDecode(data.access_token);
       login({
         userId: decoded?.userId,
         email: decoded.email,
